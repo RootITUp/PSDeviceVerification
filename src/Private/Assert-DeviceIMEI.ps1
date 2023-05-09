@@ -4,17 +4,21 @@ function Assert-DeviceIMEI {
         [string]
         $IMEI
     )
-    
+
+    # Strip hyphens and spaces
+    $data = $IMEI -replace "-", ""
+    $data = $data -replace " ", ""
+
     # Step 1: Check the length of the IMEI number
-    if ($IMEI.Length -lt 14 -or $IMEI.Length -gt 16) {
+    if ($data.Length -lt 14 -or $data.Length -gt 16) {
         $reason = "Invalid IMEI length"
 
-        Write-Warning -Message ("{0} :: The IMEI {1} resulted in {2}." -f $MyInvocation.MyCommand, $IMEI, $reason)
+        Write-Warning -Message ("{0} :: The IMEI {1} resulted in {2}." -f $MyInvocation.MyCommand, $data, $reason)
 
         return @{
             "Valid"  = $false
             "Reason" = $reason
-            "Data"   = @{}
+            "Data"   = $data
         }
     }
 
@@ -29,7 +33,7 @@ function Assert-DeviceIMEI {
         return @{
             "Valid"  = $false
             "Reason" = $reason
-            "Data"   = @{}
+            "Data"   = $data
         }
     }
 
@@ -39,8 +43,6 @@ function Assert-DeviceIMEI {
     return @{
         "Valid"  = $true
         "Reason" = ""
-        "Data"   = @{
-            # TODO : Add Brand and Model
-        }
+        "Data"   = $data
     }
 }
