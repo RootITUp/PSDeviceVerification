@@ -1,7 +1,11 @@
 name: Test PowerShell on Ubuntu
 
 # Controls when the workflow will run
-on: push
+# https://docs.github.com/en/actions/using-workflows/triggering-a-workflow
+on:
+  push:
+  release:
+    types: [created]
 
 jobs:
   lint-with-PSScriptAnalyzer:
@@ -30,22 +34,40 @@ jobs:
               Write-Output "There were $($errors.Count) errors and $($warnings.Count) warnings total."
 
   pester-test:
-      name: Test module and upload results
-      runs-on: ubuntu-latest
-      steps:
-        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-        - name: Check out repository code
-          uses: actions/checkout@v3
+    name: Test module and upload results
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
 
-        - name: Test with Pester
-          shell: pwsh
-          run: Invoke-Pester -Passthru | Export-Clixml -Path Module.Tests.xml
-          working-directory: ./Tests
+      - name: Test with Pester
+        shell: pwsh
+        run: Invoke-Pester -Passthru | Export-Clixml -Path Module.Tests.xml
+        working-directory: ./Tests
 
-        - name: Upload test results
-          uses: actions/upload-artifact@v3
-          with:
-            name: ubuntu-Module-Tests
-            path: ./Tests/Module.Tests.xml
-      #The always() function configures the job to continue processing even if there are test failures. For more information, see "always."
-      if: ${{ always() }}
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: ubuntu-Module-Tests
+          path: ./Tests/Module.Tests.xml
+    # The always() function configures the job to continue processing even if there are test failures. For more information, see "always."
+    if: ${{ always() }}
+
+  publish-to-gallery:
+    name: Publish module
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+
+      - name: Publish
+        env:
+          NUGET_KEY: ${{ secrets.NUGET_KEY }}
+        shell: pwsh
+        run: |
+          New-Item -Path "./Output/PSDeviceVerification" -ItemType Directory
+          Copy-Item -Path "./src/*" -Destination "./Output/PSDeviceVerification" -Recurse
+          Publish-Module -Path "./Output/PSDeviceVerification" -NuGetApiKey $env:NUGET_KEY -Verbose
+    # Only publish on release
+    if: ${{ github.event_name == 'release' }}
+    needs: [lint-with-PSScriptAnalyzer, pester-test]
