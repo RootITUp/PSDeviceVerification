@@ -1,5 +1,7 @@
-$manifestPath = Join-Path -Path (Join-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath "..") -ChildPath "src") -ChildPath "PSDeviceVerification.psd1" 
-Import-Module $manifestPath -Force -ErrorAction Stop
+BeforeAll {
+    $manifestPath = Join-Path -Path (Join-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath "..") -ChildPath "src") -ChildPath "PSDeviceVerification.psd1" 
+    Import-Module $manifestPath -Force -ErrorAction Stop
+}
 
 InModuleScope PSDeviceVerification {
     Describe "Test-LuhnCheck" {
