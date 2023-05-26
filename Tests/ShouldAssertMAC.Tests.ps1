@@ -1,7 +1,6 @@
 BeforeAll {
     $manifestPath = Join-Path -Path (Join-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath "..") -ChildPath "src") -ChildPath "PSDeviceVerification.psd1" 
     Import-Module $manifestPath -Force -ErrorAction Stop
-    Write-Warning -Message ("Imported $manifestPath")
 }
 
 Describe "Assert-DeviceInformation -MAC tests" {

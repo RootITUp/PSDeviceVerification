@@ -44,7 +44,6 @@ jobs:
       - name: Test with Pester
         shell: pwsh
         run: Invoke-Pester -Passthru | Export-Clixml -Path Module.Tests.xml
-        working-directory: ./Tests
 
       - name: Upload test results
         uses: actions/upload-artifact@v3
