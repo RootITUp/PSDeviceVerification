@@ -7,6 +7,7 @@ Describe "Test-LuhnCheck" {
     Context "Valid Data" {
         It "Returns true for a valid credit card number with an even number of digits" {
             InModuleScope PSDeviceVerification {
+                Write-Warning -Message ((Get-Module PSDeviceVerification).Name)
                 Write-Warning -Message ((Get-Module PSDeviceVerification).ExportedFunctions.Values -join ",")
                 $result = Test-LuhnCheck "453275631450418"
                 $result | Should -Be $true
