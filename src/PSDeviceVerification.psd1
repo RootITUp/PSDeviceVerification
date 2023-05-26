@@ -94,16 +94,13 @@
 
         PSData = @{
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags       = @("Device", "Verification", "IMEI", "MAC")
+            Tags                       = @("Device", "Verification", "IMEI", "MAC")
 
             # A URL to the license for this module.
-            # LicenseUri = ''
-
-            # A URL to the main website for this project.
-            # ProjectUri = ''
+            LicenseUri                 = 'https://github.com/RootITUp/PSDeviceVerification/LICENSE.md'
 
             # A URL to an icon representing this module.
-            # IconUri = ''
+            IconUri                    = 'https://avatars.githubusercontent.com/u/98663795?s=400&u=428000229b5603c1c6b986fec145c58217277133&v=4'
 
             # ReleaseNotes of this module
             # ReleaseNotes = ''
@@ -115,10 +112,10 @@
             # RequireLicenseAcceptance = $false
 
             # External dependent modules of this module
-            # ExternalModuleDependencies = @()
+            ExternalModuleDependencies = @()
 
             # Eine URL zur Hauptwebsite für dieses Projekt.
-            ProjectUri = 'https://github.com/RootITUp/PSDeviceVerification'
+            ProjectUri                 = 'https://github.com/RootITUp/PSDeviceVerification'
 
         } # End of PSData hashtable
 
