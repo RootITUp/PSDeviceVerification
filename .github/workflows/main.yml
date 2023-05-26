@@ -49,7 +49,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ubuntu-Module-Tests
-          path: ./Tests/Module.Tests.xml
+          path: ./Module.Tests.xml
     # The always() function configures the job to continue processing even if there are test failures. For more information, see "always."
     if: ${{ always() }}
 
