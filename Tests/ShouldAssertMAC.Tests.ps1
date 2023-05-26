@@ -8,6 +8,7 @@ Describe "Assert-DeviceInformation -MAC tests" {
     Context "Valid MAC addresses" {
     
         It "Returns valid for 00-11-22-33-44-55" {
+            Write-Warning -Message ((Get-Module PSDeviceVerification).ExportedFunctions.Values -join ",")
             $result = Assert-DeviceInformation -MAC "00-11-22-33-44-55"
             $result["MAC"]["Valid"] | Should -Be $true
             $result["MAC"]["Data"] | Should -Be "00:11:22:33:44:55"
