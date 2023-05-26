@@ -31,15 +31,27 @@ function Assert-DeviceMAC {
         $valid = $true
     }
 
+
     # Create a hashtable to return the validity and the reason if it is not valid
     $result = @{
         Valid  = $valid
         Reason = $reason
-        Data   = $data
+        # Normalize data
+        Data   = $data 
     }
 
     if (-not $valid) {
         Write-Warning -Message ("{0} :: The MAC address {1} resulted in {2}." -f $MyInvocation.MyCommand, $data, $reason)
+    }
+    else {
+        # Normalize data
+        $builder = [System.Text.StringBuilder]::new($data.Substring(0, 2).ToUpperInvariant(), 17)
+        for ($i = 2; $i -lt 12; $i += 2) {
+            $current = $data.Substring($i, 2).ToUpperInvariant()
+            $builder.Append(":${current}") | Out-Null
+        }
+        $normalized = $builder.ToString()
+        $result["Data"] = $normalized
     }
 
     return $result

@@ -1,4 +1,5 @@
 function Assert-DeviceInformation {
+    [CmdletBinding()]
     param(
         [ValidateNotNullOrEmpty()]
         [String]
